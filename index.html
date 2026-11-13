@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Northern Travels — Call Arslan, Book Your Northern Trip</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --green:#0b3d2e; --green2:#116149; --gold:#e8b64c; --ink:#0f1f1a; --card:#ffffff; --bg:#eef4f1; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--ink); }
+  header { background: linear-gradient(135deg, var(--green), var(--green2)); color: #fff; padding: 18px 16px 26px; text-align: center; }
+  header .logo { font-size: 30px; }
+  header h1 { font-size: 26px; letter-spacing: .5px; }
+  header h1 span { color: var(--gold); }
+  header p { opacity: .9; font-size: 14px; margin-top: 4px; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 14px; }
+  h2.sec { font-size: 20px; margin: 22px 0 10px; color: var(--green); }
+  .tours { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .tour { background: var(--card); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,.08); }
+  .tour .art { height: 92px; display: flex; align-items: center; justify-content: center; font-size: 44px; }
+  .a1 { background: linear-gradient(135deg,#7fb2d9,#dceefc); } .a2 { background: linear-gradient(135deg,#a8c686,#eef6df); }
+  .a3 { background: linear-gradient(135deg,#f2c98a,#fdeeda); } .a4 { background: linear-gradient(135deg,#c3a6d9,#efe6fa); }
+  .tour .body { padding: 12px 14px 14px; }
+  .tour h3 { font-size: 17px; }
+  .tour .price { color: var(--green2); font-weight: 700; font-size: 18px; margin: 4px 0; }
+  .tour p { font-size: 13px; color: #44554f; line-height: 1.45; }
+  .tour button { margin-top: 10px; background: var(--green); color: #fff; border: 0; padding: 9px 14px; border-radius: 999px; font-size: 14px; cursor: pointer; }
+  .phone { max-width: 400px; margin: 0 auto; background: #101c18; border-radius: 36px; padding: 12px; box-shadow: 0 14px 40px rgba(0,0,0,.35); }
+  .screen { background: linear-gradient(180deg, #0d2f24, #14523e 60%, #0d2f24); border-radius: 26px; color: #fff; min-height: 560px; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+  .statusbar { display: flex; justify-content: space-between; padding: 10px 16px 0; font-size: 12px; opacity: .85; }
+  .pview { display: none; flex-direction: column; align-items: center; padding: 18px 18px 22px; flex: 1; }
+  .pview.on { display: flex; }
+  .avatar { width: 108px; height: 108px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffd97a, #e8b64c 60%, #b8832a); display: flex; align-items: center; justify-content: center; font-size: 54px; position: relative; z-index: 2; box-shadow: 0 8px 24px rgba(0,0,0,.4); }
+  .rings { position: relative; display: flex; align-items: center; justify-content: center; margin-top: 16px; }
+  .rings::before, .rings::after { content: ''; position: absolute; border-radius: 50%; border: 2px solid rgba(232,182,76,.5); width: 108px; height: 108px; animation: pulse 2s infinite; }
+  .rings::after { animation-delay: 1s; }
+  @keyframes pulse { 0% { transform: scale(1); opacity: .8; } 100% { transform: scale(1.9); opacity: 0; } }
+  .cname { font-size: 24px; font-weight: 700; margin-top: 18px; }
+  .csub { font-size: 14px; opacity: .85; margin-top: 3px; text-align: center; }
+  .online { color: #7be495; font-size: 13px; margin-top: 6px; }
+  .bigbtns { margin-top: auto; display: flex; flex-direction: column; gap: 10px; width: 100%; }
+  .callbtn { border: 0; border-radius: 999px; padding: 14px; font-size: 16px; font-weight: 700; cursor: pointer; }
+  .b-call { background: #25d366; color: #062e1b; }
+  .b-ring { background: #ffffff; color: #0d2f24; }
+  .b-chat { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,.6); }
+  .langrow { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 14px; }
+  .chip { background: rgba(255,255,255,.14); color: #fff; border: 1px solid rgba(255,255,255,.25); padding: 5px 10px; border-radius: 999px; font-size: 12px; cursor: pointer; }
+  .chip.on { background: var(--gold); color: #231a02; border-color: var(--gold); font-weight: 700; }
+  .eq { display: none; gap: 4px; align-items: flex-end; height: 30px; margin-top: 12px; }
+  .eq.on { display: flex; }
+  .eq i { width: 5px; background: #7be495; border-radius: 3px; animation: eq 0.7s infinite alternate; }
+  .eq i:nth-child(2) { animation-delay: .15s; } .eq i:nth-child(3) { animation-delay: .3s; } .eq i:nth-child(4) { animation-delay: .45s; } .eq i:nth-child(5) { animation-delay: .6s; }
+  @keyframes eq { from { height: 6px; } to { height: 28px; } }
+  .timer { font-size: 15px; opacity: .9; margin-top: 6px; font-variant-numeric: tabular-nums; }
+  .captions { width: 100%; background: rgba(0,0,0,.28); border-radius: 14px; padding: 10px 12px; margin-top: 14px; height: 168px; overflow-y: auto; font-size: 13.5px; line-height: 1.5; }
+  .captions .me { color: #a9d8ff; } .captions .ag { color: #ffe1a1; }
+  .captions div { margin-bottom: 6px; }
+  .controls { display: flex; justify-content: space-around; width: 100%; margin-top: auto; padding-top: 14px; }
+  .ctl { display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: 11px; color: #fff; background: none; border: 0; cursor: pointer; }
+  .ctl .ic { width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,.16); display: flex; align-items: center; justify-content: center; font-size: 24px; }
+  .ctl.off .ic { background: #fff; color: #0d2f24; }
+  .ctl.end .ic { background: #e53935; }
+  .ctl.accept .ic { background: #25d366; animation: shake .5s infinite; }
+  @keyframes shake { 0%,100% { transform: rotate(0); } 25% { transform: rotate(8deg); } 75% { transform: rotate(-8deg); } }
+  .typebox { display: none; width: 100%; gap: 8px; margin-top: 10px; }
+  .typebox.on { display: flex; }
+  .typebox input { flex: 1; padding: 11px 12px; border-radius: 999px; border: 0; font-size: 14px; }
+  .typebox button { border: 0; background: var(--gold); border-radius: 999px; padding: 0 16px; font-weight: 700; cursor: pointer; }
+  .card { background: var(--card); border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,.08); padding: 14px; }
+  #chatlog { height: 260px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding: 4px; }
+  .msg { max-width: 82%; padding: 9px 12px; border-radius: 14px; font-size: 14px; line-height: 1.45; }
+  .msg.ag { background: #e7f3ec; align-self: flex-start; border-bottom-left-radius: 4px; }
+  .msg.me { background: #0b3d2e; color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+  .chatin { display: flex; gap: 8px; margin-top: 10px; }
+  .chatin input { flex: 1; padding: 11px 12px; border-radius: 999px; border: 1.5px solid #cfdcd6; font-size: 14px; }
+  .chatin button { border: 0; background: var(--green); color: #fff; border-radius: 999px; padding: 0 18px; font-weight: 700; cursor: pointer; }
+  form.book { display: grid; gap: 10px; }
+  form.book input, form.book select { padding: 11px 12px; border-radius: 10px; border: 1.5px solid #cfdcd6; font-size: 14px; width: 100%; }
+  form.book button { background: var(--gold); border: 0; padding: 13px; border-radius: 999px; font-weight: 800; font-size: 15px; cursor: pointer; }
+  #bookmsg { font-size: 14px; color: var(--green2); font-weight: 600; min-height: 18px; }
+  .info p { font-size: 14px; line-height: 1.6; color: #33463f; margin-bottom: 8px; }
+  footer { text-align: center; padding: 26px 12px 34px; color: #5a6f68; font-size: 13px; }
+  footer b { color: var(--green); }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">🏔️</div>
+  <h1>NORTHERN <span>TRAVELS</span></h1>
+  <p>Hunza · Skardu · Swat — tours with a local team. Call our agent Arslan, 24/7, in your own language.</p>
+</header>
+
+<div class="wrap">
+  <h2 class="sec">📞 Talk to Arslan — just like a phone call</h2>
+  <div class="phone">
+    <div class="screen">
+      <div class="statusbar"><span id="clock">--:--</span><span>📶 Northern Travels</span><span>🔋</span></div>
+      <div class="pview on" id="v-home">
+        <div class="rings"><div class="avatar">🧑🏽‍💼</div></div>
+        <div class="cname">Arslan</div>
+        <div class="csub">Northern Travels — Travel Agent<br>Assalamualaikum! Mein aap ki khidmat mein hazir hoon.</div>
+        <div class="online">● Online — replies in Urdu, English, Punjabi, Sindhi, Pashto, Hindi</div>
+        <div class="langrow" id="langchips"></div>
+        <div class="bigbtns">
+          <button class="callbtn b-call" id="btn-call">📞 Voice Call</button>
+          <button class="callbtn b-ring" id="btn-incoming">📲 Incoming Call (Demo)</button>
+          <button class="callbtn b-chat" id="btn-gotochat">💬 Chat Instead</button>
+        </div>
+      </div>
+
+      <div class="pview" id="v-ring">
+        <div class="rings"><div class="avatar">🧑🏽‍💼</div></div>
+        <div class="cname">Arslan</div>
+        <div class="csub">Northern Travels<br>📞 Incoming voice call…</div>
+        <div class="controls">
+          <button class="ctl" id="btn-decline"><span class="ic" style="background:#e53935">📵</span>Decline</button>
+          <button class="ctl accept" id="btn-accept"><span class="ic">📞</span>Accept</button>
+        </div>
+      </div>
+
+      <div class="pview" id="v-call">
+        <div class="avatar" style="width:84px;height:84px;font-size:42px">🧑🏽‍💼</div>
+        <div class="cname" style="font-size:21px">Arslan</div>
+        <div class="timer" id="callstate">Connecting…</div>
+        <div class="eq" id="eq"><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="captions" id="captions"></div>
+        <div class="typebox" id="typebox">
+          <input id="typein" placeholder="Type your reply…" autocomplete="off">
+          <button id="typesend">Send</button>
+        </div>
+        <div class="controls">
+          <button class="ctl" id="ctl-mute"><span class="ic">🎤</span><span>Mic</span></button>
+          <button class="ctl" id="ctl-spk"><span class="ic">🔊</span><span>Voice</span></button>
+          <button class="ctl" id="ctl-type"><span class="ic">⌨️</span><span>Type</span></button>
+          <button class="ctl end" id="ctl-end"><span class="ic">📵</span><span>End</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p style="text-align:center;font-size:12.5px;color:#5a6f68;margin-top:8px">Best on Chrome (Android/desktop) for mic. Allow microphone when asked. Voice notes ki tarah bolo — Arslan khud jawab dega.</p>
+  <h2 class="sec">🏔️ Our Tours</h2>
+  <div class="tours">
+    <div class="tour"><div class="art a1">🏔️</div><div class="body">
+      <h3>Hunza 5-Day Tour</h3><div class="price">Rs. 28,500 <small>/ person</small></div>
+      <p>Departs every Friday from Lahore &amp; Islamabad. Transport, hotel, daily breakfast &amp; guide included. Attabad Lake, Passu Cones, Khunjerab Pass.</p>
+      <button data-tour="Hunza 5-Day Tour">Book This Tour</button></div></div>
+    <div class="tour"><div class="art a2">🏜️</div><div class="body">
+      <h3>Skardu 7-Day Tour</h3><div class="price">Rs. 42,000 <small>/ person</small></div>
+      <p>Shangrila, Upper Kachura Lake &amp; Deosai jeep safari. Transport, hotel, breakfast &amp; guide included.</p>
+      <button data-tour="Skardu 7-Day Tour">Book This Tour</button></div></div>
+    <div class="tour"><div class="art a3">🌲</div><div class="body">
+      <h3>Swat 3-Day Tour</h3><div class="price">Rs. 16,500 <small>/ person</small></div>
+      <p>Departs every Thursday. Malam Jabba, Kalam &amp; Mahodand Lake. Students get 5% off. Perfect short escape.</p>
+      <button data-tour="Swat 3-Day Tour">Book This Tour</button></div></div>
+    <div class="tour"><div class="art a4">🗺️</div><div class="body">
+      <h3>Private Custom Tour</h3><div class="price">On request</div>
+      <p>Your dates, your route — Naran, Fairy Meadows, Chitral, anywhere in the North. Family &amp; honeymoon specials. Groups of 6+ get 8% off.</p>
+      <button data-tour="Private Custom Tour">Plan My Trip</button></div></div>
+  </div>
+
+  <h2 class="sec">💬 Chat with Arslan</h2>
+  <div class="card">
+    <div id="chatlog"></div>
+    <div class="chatin">
+      <input id="chatin" placeholder="Ask about any tour… (Urdu / English / Roman)" autocomplete="off">
+      <button id="chatsend">Send</button>
+    </div>
+  </div>
+
+  <h2 class="sec">📝 Book Your Seat</h2>
+  <div class="card">
+    <form class="book" id="bookform">
+      <input id="bk-name" placeholder="Your name" required>
+      <input id="bk-phone" placeholder="Mobile number (03xx-xxxxxxx)" required>
+      <select id="bk-tour">
+        <option>Hunza 5-Day Tour</option><option>Skardu 7-Day Tour</option>
+        <option>Swat 3-Day Tour</option><option>Private Custom Tour</option>
+      </select>
+      <button type="submit">✅ Confirm Booking Request</button>
+      <div id="bookmsg"></div>
+    </form>
+  </div>
+
+  <h2 class="sec">ℹ️ Good to know</h2>
+  <div class="card info">
+    <p><b>Advance &amp; payment:</b> Book with a small advance via JazzCash / EasyPaisa — Arslan will confirm details on call.</p>
+    <p><b>Cancellation:</b> Cancel 7+ days before departure → full advance back. Inside 7 days → advance moves to your next trip.</p>
+    <p><b>Discounts:</b> Groups of 6 or more → 8% off. Students → 5% off on Swat.</p>
+    <p><b>WhatsApp:</b> 0319 7151368 · Office: Lahore, Pakistan.</p>
+  </div>
+</div>
+
+<footer>© 2026 <b>Northern Travels</b> — demo website with an AI voice agent (Arslan). Prices in PKR.</footer>
+<script src="brain.js"></script>
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const state = { lang: 'roman', pendingLead: null };
+  let forcedLang = null, voiceOn = true, micOn = true, inCall = false;
+  let timerInt = null, callSecs = 0, rec = null, ringCtx = null, ringInt = null;
+  let audioQueue = [], playing = false, speakUntilResolve = null;
+  setInterval(()=>{ const d=new Date(); $('clock').textContent = String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }, 1000);
+  const chipData = [['','Auto'],['en','English'],['ur','اردو'],['roman','Roman'],['hi','हिन्दी'],['pa','ਪੰਜਾਬੀ'],['sd','سنڌي'],['ps','پښتو']];
+  chipData.forEach(([code,label])=>{
+    const b=document.createElement('button'); b.className='chip'+(code===''?' on':''); b.textContent=label;
+    b.onclick=()=>{ forcedLang = code || null; document.querySelectorAll('#langchips .chip').forEach(c=>c.classList.toggle('on', c===b)); };
+    $('langchips').appendChild(b);
+  });
+  function chunkText(t){ const out=[]; let s=t; while(s.length>170){ let cut=s.lastIndexOf(' ',170); if(cut<60) cut=170; out.push(s.slice(0,cut)); s=s.slice(cut).trim(); } if(s) out.push(s); return out; }
+  function playNext(){
+    if(!audioQueue.length){ playing=false; $('eq').classList.remove('on'); if(speakUntilResolve){ const r=speakUntilResolve; speakUntilResolve=null; r(); } return; }
+    playing=true; $('eq').classList.add('on');
+    const a=audioQueue.shift(); a.onended=playNext; a.onerror=playNext; a.play().catch(playNext);
+  }
+  function speakGoogle(text, lang){
+    const tl = (typeof TTS_TL!=='undefined' && TTS_TL[lang]) || 'en';
+    audioQueue = chunkText(text).map(c => new Audio('https://translate.googleapis.com/translate_tts?ie=UTF-8&client=tw-ob&tl='+tl+'&q='+encodeURIComponent(c)));
+    playNext();
+  }
+  function speakDevice(text, lang){
+    return new Promise(res=>{
+      try{
+        const u=new SpeechSynthesisUtterance(text);
+        const code=(typeof LANG_CODES!=='undefined' && LANG_CODES[lang])||'en-US'; u.lang=code;
+        const vs=speechSynthesis.getVoices();
+        const MALE=['asad','david','daniel','christopher','madhur','james','mark','george','ravi','hemant','ahmed','salman','usman','bilal'];
+        const same=vs.filter(v=>v.lang && v.lang.toLowerCase().startsWith(code.slice(0,2)));
+        const male=same.find(v=>MALE.some(m=>(v.name||'').toLowerCase().includes(m)))||vs.find(v=>MALE.some(m=>(v.name||'').toLowerCase().includes(m)));
+        if(male) u.voice=male; else if(same[0]) u.voice=same[0];
+        u.pitch=0.8; u.rate=0.97;
+        u.onend=()=>res(); u.onerror=()=>res();
+        speechSynthesis.speak(u);
+      }catch(e){ res(); }
+    });
+  }
+  function speak(text, lang){
+    addCap('ag', 'Arslan: ' + text);
+    if(!voiceOn){ if(inCall) setTimeout(()=>listen(), 400); return Promise.resolve(); }
+    if(['ur','hi','pa','en'].includes(lang)){
+      return new Promise(res=>{ speakUntilResolve=res; speakGoogle(text, lang); });
+    }
+    return speakDevice(text, lang);
+  }
+  function addCap(who, text){
+    const d=document.createElement('div'); d.className=who; d.textContent=text; $('captions').appendChild(d); $('captions').scrollTop=1e6;
+    const m=document.createElement('div'); m.className='msg '+(who==='me'?'me':'ag'); m.textContent=text.replace(/^Arslan: /,''); $('chatlog').appendChild(m); $('chatlog').scrollTop=1e6;
+  }
+  function saveLead(lead){
+    const leads=JSON.parse(localStorage.getItem('nt_leads')||'[]'); leads.push(lead); localStorage.setItem('nt_leads', JSON.stringify(leads));
+    addCap('ag','✅ Booking note saved: '+lead.name+' · '+lead.phone+' · '+lead.service);
+  }
+  async function handle(text, spoken){
+    if(!text.trim()) return;
+    addCap('me', text);
+    const r = agentReply(text, state);
+    const lang = forcedLang || r.lang || 'roman';
+    if(r.lead) saveLead(r.lead);
+    if(spoken){ await speak(r.text, lang); if(inCall && micOn) listen(); }
+    else { addCap('ag','Arslan: '+r.text); }
+  }
+  const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  function listen(){
+    if(!inCall || !micOn) return;
+    if(!Rec){ $('callstate').textContent='Mic not supported — use Type ⌨️'; return; }
+    try{
+      rec = new Rec();
+      rec.lang = (typeof LANG_CODES!=='undefined' && LANG_CODES[forcedLang || state.lang || 'roman']) || 'ur-PK';
+      rec.interimResults=false;
+      $('callstate').textContent='Listening… bolo 🎤';
+      rec.onresult = e => { const t=e.results[0][0].transcript; handle(t, true); };
+      rec.onerror = () => { if(inCall && micOn) setTimeout(()=>listen(), 1200); };
+      rec.onend = () => {};
+      rec.start();
+    }catch(e){}
+  }
+  function show(v){ ['v-home','v-ring','v-call'].forEach(id=>$(id).classList.toggle('on', id===v)); }
+  function ringtone(on){
+    try{
+      if(on){
+        ringCtx = new (window.AudioContext||window.webkitAudioContext)();
+        const beep=()=>{ if(!ringCtx) return; const o=ringCtx.createOscillator(), g=ringCtx.createGain(); o.frequency.value=440; g.gain.value=0.06; o.connect(g); g.connect(ringCtx.destination); o.start(); o.stop(ringCtx.currentTime+0.9); };
+        beep(); ringInt=setInterval(beep, 2200);
+      } else { clearInterval(ringInt); if(ringCtx){ ringCtx.close(); ringCtx=null; } }
+    }catch(e){}
+  }
+  async function startCall(greetingText, lang){
+    show('v-call'); inCall=true; callSecs=0;
+    $('callstate').textContent='Connected';
+    clearInterval(timerInt);
+    timerInt=setInterval(()=>{ callSecs++; const m=String(Math.floor(callSecs/60)).padStart(2,'0'), s=String(callSecs%60).padStart(2,'0'); $('callstate').textContent='On call · '+m+':'+s; },1000);
+    await speak(greetingText, lang);
+    if(inCall && micOn) listen();
+  }
+  function endCall(){
+    inCall=false; clearInterval(timerInt);
+    try{ rec && rec.stop(); }catch(e){}
+    audioQueue=[]; try{ speechSynthesis.cancel(); }catch(e){}
+    ringtone(false); show('v-home');
+  }
+  $('btn-call').onclick = async ()=>{
+    show('v-call'); $('callstate').textContent='Calling Arslan… 📞';
+    const lang = forcedLang || state.lang || 'roman';
+    await new Promise(r=>setTimeout(r, 1400));
+    if(true) startCall(T[lang].hello, lang);
+  };
+  $('btn-incoming').onclick = ()=>{ show('v-ring'); ringtone(true); };
+  $('btn-decline').onclick = ()=>{ ringtone(false); show('v-home'); };
+  $('btn-accept').onclick = ()=>{ ringtone(false); const lang=forcedLang||state.lang||'roman'; startCall(T[lang].hello, lang); };
+  $('ctl-end').onclick = endCall;
+  $('ctl-mute').onclick = e=>{ micOn=!micOn; $('ctl-mute').classList.toggle('off', !micOn); if(!micOn){ try{ rec && rec.stop(); }catch(err){} } else if(inCall) listen(); };
+  $('ctl-spk').onclick = ()=>{ voiceOn=!voiceOn; $('ctl-spk').classList.toggle('off', !voiceOn); if(!voiceOn){ audioQueue=[]; try{ speechSynthesis.cancel(); }catch(e){} } };
+  $('ctl-type').onclick = ()=>{ $('typebox').classList.toggle('on'); $('typein').focus(); };
+  $('typesend').onclick = ()=>{ const t=$('typein').value; $('typein').value=''; handle(t, true); };
+  $('typein').addEventListener('keydown', e=>{ if(e.key==='Enter') $('typesend').click(); });
+  $('btn-gotochat').onclick = ()=>{ window.scrollTo({ top: document.querySelector('#chatlog').getBoundingClientRect().top + window.scrollY - 140, behavior:'smooth' }); $('chatin').focus(); };
+  $('chatsend').onclick = ()=>{ const t=$('chatin').value; $('chatin').value=''; handle(t, false); };
+  $('chatin').addEventListener('keydown', e=>{ if(e.key==='Enter') $('chatsend').click(); });
+  addCap('ag','Arslan: Assalamualaikum janab! Mein Arslan, Northern Travels se. Hunza, Skardu ya Swat — kis tour ki maloomat dun?');
+  document.querySelectorAll('[data-tour]').forEach(b=>b.onclick=()=>{ $('bk-tour').value=b.dataset.tour; window.scrollTo({ top: $('bookform').getBoundingClientRect().top + window.scrollY - 120, behavior:'smooth' }); $('bk-name').focus(); });
+  $('bookform').onsubmit = e=>{
+    e.preventDefault();
+    const lead={ name:$('bk-name').value.trim(), phone:$('bk-phone').value.trim(), service:$('bk-tour').value, lang: state.lang, at: new Date().toISOString() };
+    if(!lead.name || !lead.phone){ $('bookmsg').textContent='Naam aur number lazmi hain.'; return; }
+    saveLead(lead);
+    $('bookmsg').textContent='✅ Shukriya '+lead.name+'! Aap ki booking request mil gayi hai — Arslan jald confirm kare ga.';
+    e.target.reset();
+  };
+  if('speechSynthesis' in window) speechSynthesis.getVoices();
+})();
+</script>
+</body>
+</html>
