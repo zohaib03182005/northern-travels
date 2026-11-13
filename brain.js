@@ -189,7 +189,7 @@ function agentReply(input, state) {
   const lang = state.pendingLead ? (state.lang || "roman") : detectLanguage(raw);
   state.lang = lang;
   const L = T[lang] || T.en;
-  
+
   if (state.pendingLead) {
     const digits = raw.replace(/\D/g, "");
     const phone = digits.match(/(\d{10,13})/);
@@ -205,27 +205,27 @@ function agentReply(input, state) {
   if (["hi", "hello", "salam", "aoa", "hey", "assalamualaikum", "assalam o alaikum", "sat sri akal", "namaste", "adab"].some(g => low === g || low.startsWith(g + " ") || raw.startsWith("السلام") || raw.startsWith("नमस्ते"))) {
     return { text: L.hello, lang };
   }
-  if (low.includes("book") || low.includes("reserve") || raw.includes("بک") || raw.includes("बुक")) {
+  if (low.includes("book") || low.includes("reserve") || raw.includes("بک") || low.includes("बुक")) {
     const svc = findService(low);
     state.pendingLead = { service: svc ? svc.name : "General Tour" };
     return { text: L.book(state.pendingLead.service), lang };
   }
-  if (["your name", "tumhara naam", "aap ka naam", "apna naam", "tumhara name", "تمہارا نام", "آپ کا نام", "تمہارا نام", "taso num", "tawhanjo naalo", "tuhada naam"].some(w => low.includes(w) || raw.includes(w)) return { text: L.myname, lang };
-  if (["how are you", "kaise ho", "kese ho", "kaisa hai", "kaisi ho", "کیسے ہو", "कैसे हो", "kidda", "kewen", "sanga ye", "سنگا ئے"].some(w => low.includes(w) || raw.includes(w)) return { text: L.howru, lang };
-  if (["thank", "shukriya", "شکریہ", "धन्यवाद", "meharbani", "مہربانی", "manana", "مننه"].some(w => low.includes(w) || raw.includes(w)) return { text: L.thanks, lang };
-  if (["allah hafiz", "khuda hafiz", "bye", "الوداع", "अलविदा", "اللہ حافظ", "خدا حافظ"].some(w => low.includes(w) || raw.includes(w)) return { text: L.bye, lang };
-  if (["price", "rate", "cost", "package", "tour", "trip", "qeemat", "qemat", "قیمت", "कीमत", "safar"].some(w => low.includes(w) || raw.includes(w)) {
+  if (["your name", "tumhara naam", "aap ka naam", "apna naam", "tumhara name", "تمہارا نام", "آپ کا نام", "तुम्हारा नाम", "staso num", "tawhanjo naalo", "tuhada naam"].some(w => low.includes(w) || raw.includes(w))) return { text: L.myname, lang };
+  if (["how are you", "kaise ho", "kese ho", "kaisa hai", "kaisi ho", "کیسے ہو", "कैसे हो", "kidda", "kewen", "sanga ye", "سنگه"].some(w => low.includes(w) || raw.includes(w))) return { text: L.howru, lang };
+  if (["thank", "shukriya", "شکریہ", "धन्यवाद", "meharbani", "مہربانی", "manana", "مننه"].some(w => low.includes(w) || raw.includes(w))) return { text: L.thanks, lang };
+  if (["allah hafiz", "khuda hafiz", "bye", "الوداع", "अलविदा", "اللہ حافظ", "خدا حافظ"].some(w => low.includes(w) || raw.includes(w))) return { text: L.bye, lang };
+  if (["price", "rate", "cost", "package", "tour", "trip", "qeemat", "qemat", "قیمت", "कीमत", "safar"].some(w => low.includes(w) || raw.includes(w))) {
     const svc = findService(low);
     if (svc) return { text: L.priceOne(svc), lang };
     return { text: L.priceList(), lang };
   }
-  if (["hour", "open", "timing", "time", "waqt", "waje", "وقت"].some(w => low.includes(w) || raw.includes(w)) return { text: L.hours, lang };
-  if (["where", "location", "address", "office", "kahan", "کہاں"].some(w => low.includes(w) || raw.includes(w)) return { text: L.loc, lang };
+  if (["hour", "open", "timing", "time", "waqt", "waje", "وقت"].some(w => low.includes(w) || raw.includes(w))) return { text: L.hours, lang };
+  if (["where", "location", "address", "office", "kahan", "کہاں"].some(w => low.includes(w) || raw.includes(w))) return { text: L.loc, lang };
   if (["human", "owner", "real person", "banda"].some(w => low.includes(w))) return { text: L.human, lang };
-  if (["refund", "cancel", "رقم واپس", "रद्द"].some(w => low.includes(w) || raw.includes(w)) return { text: L.refund, lang };
-  if (["discount", "group", "offer", "رعایت", "छूट"].some(w => low.includes(w) || raw.includes(w)) return { text: L.discount, lang };
-  if (["payment", "pay", "advance", "jazzcash", "easypaisa", "ادائیگی", "भुगतान"].some(w => low.includes(w) || raw.includes(w)) return { text: L.payment, lang };
-  if (["hotel", "stay", "room", "ہوٹل", "होटल"].some(w => low.includes(w) || raw.includes(w)) return { text: L.hotel, lang };
+  if (["refund", "cancel", "رقم واپس", "रद्द"].some(w => low.includes(w) || raw.includes(w))) return { text: L.refund, lang };
+  if (["discount", "group", "offer", "رعایت", "छूट"].some(w => low.includes(w) || raw.includes(w))) return { text: L.discount, lang };
+  if (["payment", "pay", "advance", "jazzcash", "easypaisa", "ادائیگی", "भुगतान"].some(w => low.includes(w) || raw.includes(w))) return { text: L.payment, lang };
+  if (["hotel", "stay", "room", "ہوٹل", "होटल"].some(w => low.includes(w) || raw.includes(w))) return { text: L.hotel, lang };
   return { text: L.fallback, lang };
 }
 
@@ -235,7 +235,7 @@ const OUTGOING_PITCH = (lead, lang) => {
   const price = svc ? svc.price : "available on request";
   const by = {
     en: `Hello ${lead.name} janab, this is Arslan calling from Northern Travels. You showed interest in ${lead.service}. Seats are limited - shall I confirm your booking? The price is ${price}.`,
-    ur: `السلام علیکم ${lead.name} بھائی، میں ارسلان بول رہا ہوں ناردرن ٹریولز سے۔ آپ نے ${lead.service} میں دلچسپی ظاہر کی ہے۔ نشستیں محدود ہیں کیا میں آپ کی بکنگ کنفرم کر دوں؟ قیمت ہے ${price}۔`
+    ur: `السلام علیکم ${lead.name} بھائی، میں ارسلان بول رہا ہوں ناردرن ٹریولز سے۔ آپ نے ${lead.service} میں دلچسپی ظاہر کی تھی۔ نشستیں محدود ہیں، کیا میں آپ کی بکنگ کنفرم کر دوں؟ قیمت ہے ${price}۔`
   };
   return by[lang] || `Assalamualaikum ${lead.name} bhai, mein Arslan bol raha hoon Northern Travels se. Aap ne ${lead.service} mein interest dikhaya tha. Seats limited hain, kya mein aap ki booking confirm kar doon? Price hai ${price}.`;
 };
