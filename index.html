@@ -87,7 +87,7 @@
 <header>
   <div class="logo">🏔️</div>
   <h1>NORTHERN <span>TRAVELS</span></h1>
-  <p>Hunza · Skardu · Swat — tours with a local team. Call our agent Arslan, 24/7, in your own language.</p>
+  <p>Hunza · Skardu · Swat</p>
 </header>
 
 <div class="wrap">
@@ -95,16 +95,16 @@
   <div class="phone">
     <div class="screen">
       <div class="statusbar"><span id="clock">--:--</span><span>📶 Northern Travels</span><span>🔋</span></div>
+
       <div class="pview on" id="v-home">
         <div class="rings"><div class="avatar">🧑🏽‍💼</div></div>
         <div class="cname">Arslan</div>
         <div class="csub">Northern Travels — Travel Agent<br>Assalamualaikum! Mein aap ki khidmat mein hazir hoon.</div>
-        <div class="online">● Online — replies in Urdu, English, Punjabi, Sindhi, Pashto, Hindi</div>
-        <div class="langrow" id="langchips"></div>
+        <div class="online">● Online</div>
         <div class="bigbtns">
           <button class="callbtn b-call" id="btn-call">📞 Voice Call</button>
-          <button class="callbtn b-ring" id="btn-incoming">📲 Incoming Call (Demo)</button>
-          <button class="callbtn b-chat" id="btn-gotochat">💬 Chat Instead</button>
+          <button class="callbtn b-ring" id="btn-incoming">📲 Incoming Call</button>
+          <button class="callbtn b-chat" id="btn-gotochat">💬 Chat</button>
         </div>
       </div>
 
@@ -124,6 +124,7 @@
         <div class="timer" id="callstate">Connecting…</div>
         <div class="eq" id="eq"><i></i><i></i><i></i><i></i><i></i></div>
         <div class="captions" id="captions"></div>
+        <button id="talbtn" style="display:none;margin-top:10px;background:#25d366;color:#062e1b;border:0;border-radius:999px;padding:12px 22px;font-size:15px;font-weight:800;cursor:pointer">🎤 Bolne ke liye dabao</button>
         <div class="typebox" id="typebox">
           <input id="typein" placeholder="Type your reply…" autocomplete="off">
           <button id="typesend">Send</button>
@@ -137,7 +138,7 @@
       </div>
     </div>
   </div>
-  <p style="text-align:center;font-size:12.5px;color:#5a6f68;margin-top:8px">Best on Chrome (Android/desktop) for mic. Allow microphone when asked. Voice notes ki tarah bolo — Arslan khud jawab dega.</p>
+
   <h2 class="sec">🏔️ Our Tours</h2>
   <div class="tours">
     <div class="tour"><div class="art a1">🏔️</div><div class="body">
@@ -181,16 +182,10 @@
     </form>
   </div>
 
-  <h2 class="sec">ℹ️ Good to know</h2>
-  <div class="card info">
-    <p><b>Advance &amp; payment:</b> Book with a small advance via JazzCash / EasyPaisa — Arslan will confirm details on call.</p>
-    <p><b>Cancellation:</b> Cancel 7+ days before departure → full advance back. Inside 7 days → advance moves to your next trip.</p>
-    <p><b>Discounts:</b> Groups of 6 or more → 8% off. Students → 5% off on Swat.</p>
-    <p><b>WhatsApp:</b> 0319 7151368 · Office: Lahore, Pakistan.</p>
-  </div>
 </div>
 
 <footer>© 2026 <b>Northern Travels</b> — demo website with an AI voice agent (Arslan). Prices in PKR.</footer>
+
 <script src="brain.js"></script>
 <script>
 (function(){
@@ -199,13 +194,9 @@
   let forcedLang = null, voiceOn = true, micOn = true, inCall = false;
   let timerInt = null, callSecs = 0, rec = null, ringCtx = null, ringInt = null;
   let audioQueue = [], playing = false, speakUntilResolve = null;
+
   setInterval(()=>{ const d=new Date(); $('clock').textContent = String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }, 1000);
-  const chipData = [['','Auto'],['en','English'],['ur','اردو'],['roman','Roman'],['hi','हिन्दी'],['pa','ਪੰਜਾਬੀ'],['sd','سنڌي'],['ps','پښتو']];
-  chipData.forEach(([code,label])=>{
-    const b=document.createElement('button'); b.className='chip'+(code===''?' on':''); b.textContent=label;
-    b.onclick=()=>{ forcedLang = code || null; document.querySelectorAll('#langchips .chip').forEach(c=>c.classList.toggle('on', c===b)); };
-    $('langchips').appendChild(b);
-  });
+
   function chunkText(t){ const out=[]; let s=t; while(s.length>170){ let cut=s.lastIndexOf(' ',170); if(cut<60) cut=170; out.push(s.slice(0,cut)); s=s.slice(cut).trim(); } if(s) out.push(s); return out; }
   function playNext(){
     if(!audioQueue.length){ playing=false; $('eq').classList.remove('on'); if(speakUntilResolve){ const r=speakUntilResolve; speakUntilResolve=null; r(); } return; }
@@ -213,7 +204,7 @@
     const a=audioQueue.shift(); a.onended=playNext; a.onerror=playNext; a.play().catch(playNext);
   }
   function speakGoogle(text, lang){
-    const tl = (typeof TTS_TL!=='undefined' && TTS_TL[lang]) || 'en';
+    const tl = (typeof TTS_TL!=='undefined' && TTS_TL[lang]) || lang || 'en';
     audioQueue = chunkText(text).map(c => new Audio('https://translate.googleapis.com/translate_tts?ie=UTF-8&client=tw-ob&tl='+tl+'&q='+encodeURIComponent(c)));
     playNext();
   }
@@ -235,12 +226,17 @@
   }
   function speak(text, lang){
     addCap('ag', 'Arslan: ' + text);
-    if(!voiceOn){ if(inCall) setTimeout(()=>listen(), 400); return Promise.resolve(); }
-    if(['ur','hi','pa','en'].includes(lang)){
-      return new Promise(res=>{ speakUntilResolve=res; speakGoogle(text, lang); });
+    if(!voiceOn){ return Promise.resolve(); }
+    const timeout = new Promise(res=>setTimeout(res, 15000));
+    let job;
+    if(['ur','hi','pa','en','roman'].includes(lang)){
+      job = new Promise(res=>{ speakUntilResolve=res; speakGoogle(text, lang === 'roman' ? 'ur' : lang); });
+    } else {
+      job = speakDevice(text, lang);
     }
-    return speakDevice(text, lang);
+    return Promise.race([job, timeout]);
   }
+
   function addCap(who, text){
     const d=document.createElement('div'); d.className=who; d.textContent=text; $('captions').appendChild(d); $('captions').scrollTop=1e6;
     const m=document.createElement('div'); m.className='msg '+(who==='me'?'me':'ag'); m.textContent=text.replace(/^Arslan: /,''); $('chatlog').appendChild(m); $('chatlog').scrollTop=1e6;
@@ -258,21 +254,26 @@
     if(spoken){ await speak(r.text, lang); if(inCall && micOn) listen(); }
     else { addCap('ag','Arslan: '+r.text); }
   }
+
   const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
   function listen(){
     if(!inCall || !micOn) return;
-    if(!Rec){ $('callstate').textContent='Mic not supported — use Type ⌨️'; return; }
+    if(!Rec){ $('callstate').textContent='Is browser mein mic nahi chalta — Type ⌨️ use karo'; $('typebox').classList.add('on'); return; }
     try{
       rec = new Rec();
       rec.lang = (typeof LANG_CODES!=='undefined' && LANG_CODES[forcedLang || state.lang || 'roman']) || 'ur-PK';
       rec.interimResults=false;
       $('callstate').textContent='Listening… bolo 🎤';
       rec.onresult = e => { const t=e.results[0][0].transcript; handle(t, true); };
-      rec.onerror = () => { if(inCall && micOn) setTimeout(()=>listen(), 1200); };
+      rec.onerror = (ev) => {
+        if(ev && ev.error === 'not-allowed'){ $('callstate').textContent='Mic ki ijazat do 🎤 — ya Type ⌨️ use karo'; $('typebox').classList.add('on'); micOn=false; $('ctl-mute').classList.add('off'); return; }
+        if(inCall && micOn) setTimeout(()=>listen(), 1200);
+      };
       rec.onend = () => {};
       rec.start();
     }catch(e){}
   }
+
   function show(v){ ['v-home','v-ring','v-call'].forEach(id=>$(id).classList.toggle('on', id===v)); }
   function ringtone(on){
     try{
@@ -285,6 +286,7 @@
   }
   async function startCall(greetingText, lang){
     show('v-call'); inCall=true; callSecs=0;
+    $('talbtn').style.display='block';
     $('callstate').textContent='Connected';
     clearInterval(timerInt);
     timerInt=setInterval(()=>{ callSecs++; const m=String(Math.floor(callSecs/60)).padStart(2,'0'), s=String(callSecs%60).padStart(2,'0'); $('callstate').textContent='On call · '+m+':'+s; },1000);
@@ -293,6 +295,7 @@
   }
   function endCall(){
     inCall=false; clearInterval(timerInt);
+    $('talbtn').style.display='none';
     try{ rec && rec.stop(); }catch(e){}
     audioQueue=[]; try{ speechSynthesis.cancel(); }catch(e){}
     ringtone(false); show('v-home');
@@ -301,11 +304,12 @@
     show('v-call'); $('callstate').textContent='Calling Arslan… 📞';
     const lang = forcedLang || state.lang || 'roman';
     await new Promise(r=>setTimeout(r, 1400));
-    if(true) startCall(T[lang].hello, lang);
+    startCall(T[lang].hello, lang);
   };
   $('btn-incoming').onclick = ()=>{ show('v-ring'); ringtone(true); };
   $('btn-decline').onclick = ()=>{ ringtone(false); show('v-home'); };
   $('btn-accept').onclick = ()=>{ ringtone(false); const lang=forcedLang||state.lang||'roman'; startCall(T[lang].hello, lang); };
+  $('talbtn').onclick = ()=>{ if(inCall && micOn) listen(); };
   $('ctl-end').onclick = endCall;
   $('ctl-mute').onclick = e=>{ micOn=!micOn; $('ctl-mute').classList.toggle('off', !micOn); if(!micOn){ try{ rec && rec.stop(); }catch(err){} } else if(inCall) listen(); };
   $('ctl-spk').onclick = ()=>{ voiceOn=!voiceOn; $('ctl-spk').classList.toggle('off', !voiceOn); if(!voiceOn){ audioQueue=[]; try{ speechSynthesis.cancel(); }catch(e){} } };
@@ -313,9 +317,11 @@
   $('typesend').onclick = ()=>{ const t=$('typein').value; $('typein').value=''; handle(t, true); };
   $('typein').addEventListener('keydown', e=>{ if(e.key==='Enter') $('typesend').click(); });
   $('btn-gotochat').onclick = ()=>{ window.scrollTo({ top: document.querySelector('#chatlog').getBoundingClientRect().top + window.scrollY - 140, behavior:'smooth' }); $('chatin').focus(); };
+
   $('chatsend').onclick = ()=>{ const t=$('chatin').value; $('chatin').value=''; handle(t, false); };
   $('chatin').addEventListener('keydown', e=>{ if(e.key==='Enter') $('chatsend').click(); });
   addCap('ag','Arslan: Assalamualaikum janab! Mein Arslan, Northern Travels se. Hunza, Skardu ya Swat — kis tour ki maloomat dun?');
+
   document.querySelectorAll('[data-tour]').forEach(b=>b.onclick=()=>{ $('bk-tour').value=b.dataset.tour; window.scrollTo({ top: $('bookform').getBoundingClientRect().top + window.scrollY - 120, behavior:'smooth' }); $('bk-name').focus(); });
   $('bookform').onsubmit = e=>{
     e.preventDefault();
